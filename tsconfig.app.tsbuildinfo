@@ -1,0 +1,1 @@
+{"root":["./src/App.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/api/formApi.ts","./src/components/Dynamicform.tsx","./src/redux/Saga.ts","./src/redux/formSlice.ts","./src/types/formTypes.ts"],"version":"5.6.3"}
