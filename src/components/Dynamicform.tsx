@@ -15,7 +15,8 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { FormField } from "../types/formTypes";
-import { v4 as uuidv4 } from "uuid"; 
+import { v4 as uuidv4 } from "uuid";
+import "./Payment.css";
 
 const DynamicForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,66 @@ const DynamicForm: React.FC = () => {
     validateForm();
   }, [formConfig, formData]);
 
+  // const validateForm = () => {
+  //   if (!formConfig || !formConfig.fields) {
+  //     setIsFormValid(false);
+  //     return;
+  //   }
+
+  //   const errors: Record<string, string> = {};
+  //   let valid = true;
+
+  //   formConfig.fields.forEach((field) => {
+  //     const value = formData[field.name];
+
+  //     if (field.required && !value) {
+  //       errors[field.name] = `${field.label} is required`;
+  //       valid = false;
+  //     }
+
+  //     else if (
+  //       field.type === "email" &&
+  //       value &&
+  //       !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
+  //     ) {
+  //       errors[field.name] = "Please enter a valid email address";
+  //       valid = false;
+  //     }
+
+  //     else if (field.name === "password" && value) {
+  //       if (value.length < 8) {
+  //         errors[field.name] = "Password must be at least 8 characters long";
+  //         valid = false;
+  //       } else if (!/[A-Z]/.test(value)) {
+  //         errors[field.name] = "Password must contain at least one uppercase letter";
+  //         valid = false;
+  //       } else if (!/[0-9]/.test(value)) {
+  //         errors[field.name] = "Password must contain at least one number";
+  //         valid = false;
+  //       } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+  //         errors[field.name] = "Password must contain at least one special character";
+  //         valid = false;
+  //       }
+  //     }
+
+  //     else if (field.type === "text" && value && !/^[A-Za-z\s]+$/.test(value)) {
+  //       errors[field.name] = "Name must only contain alphabets";
+  //       valid = false;
+  //     }
+
+  //     else if (field.type === "checkbox" && field.required) {
+  //       const isChecked = field.options?.some((option) => formData[option]);
+  //       if (!isChecked) {
+  //         errors[field.name] = `At least one ${field.label} option must be selected`;
+  //         valid = false;
+  //       }
+  //     }
+  //   });
+
+  //   setFormErrors(errors);
+  //   setIsFormValid(valid);
+  // };
+
   const validateForm = () => {
     if (!formConfig || !formConfig.fields) {
       setIsFormValid(false);
@@ -48,20 +109,50 @@ const DynamicForm: React.FC = () => {
 
     formConfig.fields.forEach((field) => {
       const value = formData[field.name];
+
+      // Check if required field is missing
       if (field.required && !value) {
         errors[field.name] = `${field.label} is required`;
         valid = false;
-      } else if (
+      }
+
+      // Validate email field
+      else if (
         field.type === "email" &&
         value &&
-        !/\S+@\S+\.\S+/.test(value)
+        !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
       ) {
-        errors[field.name] = "Please enter a valid email";
-        valid = false;
-      } else if (field.name === "password" && value && value.length < 8) {
-        errors[field.name] = "Password must be at least 8 characters";
+        errors[field.name] = "Please enter a valid email address";
         valid = false;
       }
+
+      // Validate name field (only alphabet characters)
+      else if (field.type === "text" && value && !/^[A-Za-z\s]+$/.test(value)) {
+        errors[field.name] = "Name must only contain alphabets";
+        valid = false;
+      }
+
+      // Password validation
+      else if (field.name === "password" && value) {
+        if (value.length < 8) {
+          errors[field.name] = "Password must be at least 8 characters long";
+          valid = false;
+        } else if (!/[A-Z]/.test(value)) {
+          errors[field.name] =
+            "Password must contain at least one uppercase letter";
+          valid = false;
+        } else if (!/[0-9]/.test(value)) {
+          errors[field.name] = "Password must contain at least one number";
+          valid = false;
+        } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+          errors[field.name] =
+            "Password must contain at least one special character";
+          valid = false;
+        }
+      }
+
+      
+      
     });
 
     setFormErrors(errors);
@@ -141,7 +232,7 @@ const DynamicForm: React.FC = () => {
                 key={option}
                 control={
                   <Checkbox
-                    required
+                    
                     onChange={handleInputChange}
                     name={option}
                     checked={!!formData[option]}
@@ -162,7 +253,7 @@ const DynamicForm: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="form-container">
         <Box p={3} display="flex" flexDirection="column" gap={2}>
           <Typography variant="h4">
             {formConfig ? formConfig.title : "Loading..."}
@@ -172,6 +263,7 @@ const DynamicForm: React.FC = () => {
           ))}
           <Button
             variant="contained"
+            className="submit-button"
             color="primary"
             type="submit"
             disabled={!isFormValid}
@@ -181,6 +273,7 @@ const DynamicForm: React.FC = () => {
         </Box>
       </form>
       <Snackbar
+        className="snackbar-alert"
         open={openSnackbar}
         autoHideDuration={7000}
         onClose={handleSnackbarClose}
