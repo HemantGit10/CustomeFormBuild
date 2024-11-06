@@ -15,6 +15,7 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { FormField } from "../types/formTypes";
+import { v4 as uuidv4 } from "uuid"; 
 
 const DynamicForm: React.FC = () => {
   const dispatch = useDispatch();
@@ -22,42 +23,49 @@ const DynamicForm: React.FC = () => {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">("success");
+  const [snackbarSeverity, setSnackbarSeverity] = useState<"success" | "error">(
+    "success"
+  );
   const [isFormValid, setIsFormValid] = useState(false);
+  const [uniqueID, setUniqueID] = useState<string | null>(null);
 
   useEffect(() => {
     dispatch({ type: "form/loadFormConfig" });
   }, [dispatch]);
 
   useEffect(() => {
-    validateForm(); // Validate form whenever formConfig or formData changes
+    validateForm();
   }, [formConfig, formData]);
 
   const validateForm = () => {
     if (!formConfig || !formConfig.fields) {
-      setIsFormValid(false); // Set form as invalid if config is not available
+      setIsFormValid(false);
       return;
     }
 
     const errors: Record<string, string> = {};
-    let valid = true; // Track overall form validity
+    let valid = true;
 
     formConfig.fields.forEach((field) => {
       const value = formData[field.name];
       if (field.required && !value) {
         errors[field.name] = `${field.label} is required`;
-        valid = false; // Mark as invalid if required field is empty
-      } else if (field.type === "email" && value && !/\S+@\S+\.\S+/.test(value)) {
+        valid = false;
+      } else if (
+        field.type === "email" &&
+        value &&
+        !/\S+@\S+\.\S+/.test(value)
+      ) {
         errors[field.name] = "Please enter a valid email";
-        valid = false; // Mark as invalid if email format is wrong
+        valid = false;
       } else if (field.name === "password" && value && value.length < 8) {
         errors[field.name] = "Password must be at least 8 characters";
-        valid = false; // Mark as invalid if password is too short
+        valid = false;
       }
     });
 
     setFormErrors(errors);
-    setIsFormValid(valid); // Update validity
+    setIsFormValid(valid);
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +74,19 @@ const DynamicForm: React.FC = () => {
       ...prevData,
       [name]: type === "checkbox" ? checked : value,
     }));
-    validateForm(); // Validate the form on every input change
+    validateForm();
   };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     if (isFormValid) {
-      localStorage.setItem("formData", JSON.stringify(formData));
+      const id = uuidv4();
+      setUniqueID(id);
+      const submissionData = { ...formData, id };
+
+      localStorage.setItem("formData", JSON.stringify(submissionData));
       setSnackbarSeverity("success");
+      console.log("Form submitted with ID:", id);
     } else {
       setSnackbarSeverity("error");
     }
@@ -95,9 +108,10 @@ const DynamicForm: React.FC = () => {
             label={field.label}
             name={field.name}
             fullWidth
+            required
             onChange={handleInputChange}
             error={!!formErrors[field.name]}
-            helperText={formErrors[field.name]}
+            helperText={formErrors[field.name] || " "}
           />
         );
       case "radio":
@@ -108,6 +122,7 @@ const DynamicForm: React.FC = () => {
                 <FormControlLabel
                   key={option}
                   value={option}
+                  required
                   control={<Radio />}
                   label={option}
                 />
@@ -126,6 +141,7 @@ const DynamicForm: React.FC = () => {
                 key={option}
                 control={
                   <Checkbox
+                    required
                     onChange={handleInputChange}
                     name={option}
                     checked={!!formData[option]}
@@ -148,7 +164,9 @@ const DynamicForm: React.FC = () => {
     <>
       <form onSubmit={handleSubmit}>
         <Box p={3} display="flex" flexDirection="column" gap={2}>
-          <Typography variant="h4">{formConfig ? formConfig.title : "Loading..."}</Typography>
+          <Typography variant="h4">
+            {formConfig ? formConfig.title : "Loading..."}
+          </Typography>
           {formConfig?.fields?.map((field) => (
             <Box key={field.name}>{renderField(field)}</Box>
           ))}
@@ -156,7 +174,7 @@ const DynamicForm: React.FC = () => {
             variant="contained"
             color="primary"
             type="submit"
-            disabled={!isFormValid} // Disable if form is not valid
+            disabled={!isFormValid}
           >
             Submit
           </Button>
@@ -164,7 +182,7 @@ const DynamicForm: React.FC = () => {
       </form>
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={6000}
+        autoHideDuration={7000}
         onClose={handleSnackbarClose}
       >
         <Alert
@@ -173,7 +191,7 @@ const DynamicForm: React.FC = () => {
           sx={{ width: "100%" }}
         >
           {snackbarSeverity === "success"
-            ? "Form submitted successfully!"
+            ? `Form submitted successfully! Submission ID: ${uniqueID}`
             : "Please correct the errors in the form."}
         </Alert>
       </Snackbar>
