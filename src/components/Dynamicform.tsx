@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../main";
 import { Box, Button, Typography, Snackbar, Alert } from "@mui/material";
-// import { FormConfig } from "../types/formTypes";
 import { validateForm } from "../utils/formValidationUtils";
 import { renderField } from "../utils/formRenderingUtils";
 import { v4 as uuidv4 } from "uuid";
@@ -24,9 +23,8 @@ const DynamicForm: React.FC = () => {
     dispatch({ type: "form/loadFormConfig" });
   }, [dispatch]);
 
-
   useEffect(() => {
-    if (formConfig) { // Check if formConfig is not null
+    if (formConfig) {
       const { errors, isValid } = validateForm(formConfig, formData);
       setFormErrors(errors);
       setIsFormValid(isValid);
@@ -49,14 +47,11 @@ const DynamicForm: React.FC = () => {
       const submissionData = { ...formData, id };
       localStorage.setItem("formData", JSON.stringify(submissionData));
       setSnackbarSeverity("success");
+      setFormData({}); // Reset form data after successful submission
     } else {
       setSnackbarSeverity("error");
     }
     setOpenSnackbar(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setOpenSnackbar(false);
   };
 
   return (
@@ -91,10 +86,10 @@ const DynamicForm: React.FC = () => {
         className="snackbar-alert"
         open={openSnackbar}
         autoHideDuration={7000}
-        onClose={handleSnackbarClose}
+        onClose={() => setOpenSnackbar(false)}
       >
         <Alert
-          onClose={handleSnackbarClose}
+          onClose={() => setOpenSnackbar(false)}
           severity={snackbarSeverity}
           sx={{ width: "100%" }}
         >
