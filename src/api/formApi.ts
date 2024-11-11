@@ -1,9 +1,8 @@
 import { FormConfig } from '../types/formTypes';
 
 export const fetchFormConfig = async (): Promise<FormConfig> => {
-  // Mock API response
   return {
-    title: 'User Feedback Form',
+    title: 'User Custom Form',
     fields: [
       { label: 'Name', name: 'name', type: 'text' },
       { label: 'Email', name: 'email', type: 'text' },

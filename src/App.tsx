@@ -1,5 +1,3 @@
-// src/App.tsx
-
 import React from 'react';
 import DynamicForm from './components/Dynamicform';
 // import Paymentform from './components/Paymentform';
