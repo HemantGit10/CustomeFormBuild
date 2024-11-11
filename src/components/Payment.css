@@ -1,71 +1,99 @@
+/* Main container for the form */
 .form-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 40px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.form-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
 .form-container h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  font-size: 2rem;
   color: #333;
-  font-weight: bold;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
+/* Form field styling */
 .form-field {
   width: 100%;
-  margin-bottom: 10px;
-}
-
-.form-field input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 16px;
-  box-sizing: border-box;
-  transition: border-color 0.3s;
-}
-
-.form-field input:focus {
-  border-color: #007bff;
-  outline: none;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-field label {
   font-size: 14px;
-  font-weight: bold;
-  /* margin-bottom: 8px; */
-  display: block;
+  font-weight: 500;
   color: #555;
+  margin-bottom: 8px;
+}
+
+/* Input field styling */
+.form-field input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  background-color: #fafafa;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-field input:focus {
+  border-color: #007bff;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+  outline: none;
 }
 
 .form-field input.error {
-  border-color: red;
+  border-color: #dc3545;
+  background-color: #ffe5e5;
 }
 
+/* Error message styling */
+.error-message {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Button container */
 .button-container {
   display: flex;
   justify-content: center;
-  /* margin-top: 20px; */
+  margin-top: 20px;
 }
 
+/* Submit button styling */
 .submit-button {
   background-color: #007bff;
   color: white;
-  padding: 12px 20px;
+  padding: 14px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
   width: 100%;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .submit-button:hover {
   background-color: #0056b3;
+  transform: translateY(-3px);
 }
 
 .submit-button:disabled {
@@ -73,11 +101,7 @@
   cursor: not-allowed;
 }
 
-.error-message {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
+/* Snackbar container styling */
 .snackbar-container {
   width: 100%;
   max-width: 400px;
@@ -85,10 +109,11 @@
 }
 
 .snackbar-alert {
-  padding: 12px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   font-size: 14px;
   color: #fff;
+  font-weight: 500;
 }
 
 .snackbar-alert.success {
@@ -98,3 +123,78 @@
 .snackbar-alert.error {
   background-color: #dc3545;
 }
+
+
+
+/* SuccessModal.css */
+.success-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  transition: opacity 0.3s ease;
+}
+
+.success-modal {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  padding: 20px 30px;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.success-modal h2 {
+  color: #28a745;
+  font-size: 1.8em;
+  margin: 0 0 10px;
+}
+
+.success-modal p {
+  color: #333333;
+  font-size: 1em;
+  margin: 0 0 20px;
+}
+
+.success-modal-icon {
+  width: 50px;
+  height: 50px;
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.success-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #333333;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.success-modal-close:hover {
+  color: #000000;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
