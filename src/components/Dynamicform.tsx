@@ -4,7 +4,7 @@ import { RootState } from "../main";
 import { Box, Button, Typography, Skeleton } from "@mui/material";
 import { validateForm } from "../utils/formValidationUtils";
 import { renderField } from "../utils/formRenderingUtils";
-import { v4 as uuidv4 } from "uuid"; 
+import { v4 as uuidv4 } from "uuid"; // Import uuid for unique ID generation
 import "./Payment.css";
 import SuccessModal from "../components/SucessModal";
 
@@ -57,8 +57,8 @@ const DynamicForm: React.FC = () => {
     if (isFormValid) {
       const id = uuidv4(); 
       setUniqueID(id); 
-      setFormData({}); 
-      setShowSuccessModal(true); 
+      setFormData({}); // Clear form data
+      setShowSuccessModal(true); // Show success modal
     }
   };
 
