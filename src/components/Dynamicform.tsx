@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../main";
-import { Box, Button, Typography, Skeleton } from "@mui/material";
+import { Box, Button, Typography, Skeleton, Backdrop, CircularProgress } from "@mui/material";
 import { validateForm } from "../utils/formValidationUtils";
 import { renderField } from "../utils/formRenderingUtils";
-import { v4 as uuidv4 } from "uuid"; 
+import { v4 as uuidv4 } from "uuid";
 import "./Payment.css";
 import SuccessModal from "../components/SucessModal";
 
@@ -15,10 +15,11 @@ const DynamicForm: React.FC = () => {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isBackdropOpen, setIsBackdropOpen] = useState(false); // Backdrop state
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [uniqueID, setUniqueID] = useState<string | null>(null); 
+  const [uniqueID, setUniqueID] = useState<string | null>(null);
 
-  //loading delay
+  // Loading delay
   useEffect(() => {
     const timer = setTimeout(() => {
       dispatch({ type: "form/loadFormConfig" });
@@ -50,13 +51,17 @@ const DynamicForm: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (isFormValid) {
-      const id = uuidv4(); 
-      setUniqueID(id); 
-      setFormData({}); 
-      setShowSuccessModal(true);
+      setIsBackdropOpen(true); // Show Backdrop
+      const id = uuidv4();
+      setTimeout(() => {
+        setUniqueID(id);
+        setFormData({});
+        setShowSuccessModal(true);
+        setIsBackdropOpen(false); 
+      }, 2000);
     }
   };
 
@@ -108,6 +113,13 @@ const DynamicForm: React.FC = () => {
           )}
         </Box>
       </form>
+
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isBackdropOpen}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
       <SuccessModal
         open={showSuccessModal}
