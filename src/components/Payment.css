@@ -18,7 +18,7 @@
 /* Title styling */
 .form-container h1 {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   color: #333;
   font-weight: 700;
   letter-spacing: 0.8px;
@@ -52,7 +52,9 @@
 }
 
 /* Input field styling */
-.form-field input {
+.form-field input, 
+.form-field select, 
+.form-field textarea {
   width: 100%;
   padding: 16px;
   border-radius: 12px;
@@ -63,16 +65,26 @@
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.form-field input:focus {
+.form-field input:focus, 
+.form-field select:focus, 
+.form-field textarea:focus {
   border-color: #007bff;
   background-color: #fff;
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
   outline: none;
 }
 
-.form-field input.error {
+.form-field input.error, 
+.form-field select.error, 
+.form-field textarea.error {
   border-color: #dc3545;
   background-color: #ffe5e5;
+}
+
+/* Textarea specific styling */
+.form-field textarea {
+  resize: vertical;
+  min-height: 100px;
 }
 
 /* Error message styling */
@@ -81,6 +93,66 @@
   font-size: 13px;
   margin-top: 8px;
   font-weight: 500;
+}
+
+/* Helper text styling */
+.helper-text {
+  font-size: 13px;
+  color: #888;
+  margin-top: 5px;
+}
+
+/* Checkbox styling */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  accent-color: #007bff;
+  margin-right: 10px;
+}
+
+/* Radio button styling */
+.radio-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.radio-container input[type="radio"] {
+  accent-color: #007bff;
+  margin-right: 10px;
+}
+
+/* Tooltip styling */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Submit button container */
@@ -138,6 +210,18 @@
 
 .snackbar-alert.error {
   background-color: #dc3545;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .submit-button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
 }
 
 

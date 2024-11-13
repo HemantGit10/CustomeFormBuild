@@ -7,7 +7,7 @@ import "./Payment.css";
 interface SuccessModalProps {
   open: boolean;
   onClose: () => void;
-  uniqueID: string | null; // Add uniqueID prop
+  uniqueID: string | null; 
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ open, onClose, uniqueID }) => {

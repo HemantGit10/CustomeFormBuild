@@ -4,7 +4,7 @@ import { RootState } from "../main";
 import { Box, Button, Typography, Skeleton } from "@mui/material";
 import { validateForm } from "../utils/formValidationUtils";
 import { renderField } from "../utils/formRenderingUtils";
-import { v4 as uuidv4 } from "uuid"; // Import uuid for unique ID generation
+import { v4 as uuidv4 } from "uuid"; 
 import "./Payment.css";
 import SuccessModal from "../components/SucessModal";
 
@@ -16,7 +16,7 @@ const DynamicForm: React.FC = () => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [uniqueID, setUniqueID] = useState<string | null>(null); // State to hold the UUID
+  const [uniqueID, setUniqueID] = useState<string | null>(null); 
 
   //loading delay
   useEffect(() => {
@@ -28,7 +28,6 @@ const DynamicForm: React.FC = () => {
     return () => clearTimeout(timer);
   }, [dispatch]);
 
-  // Validate form data whenever it or formConfig changes
   useEffect(() => {
     if (formConfig) {
       const { errors, isValid } = validateForm(formConfig, formData);
@@ -37,7 +36,6 @@ const DynamicForm: React.FC = () => {
     }
   }, [formConfig, formData]);
 
-  // Auto-save to localStorage on data change
   useEffect(() => {
     if (Object.keys(formData).length > 0) {
       localStorage.setItem("formData", JSON.stringify(formData));
@@ -57,8 +55,8 @@ const DynamicForm: React.FC = () => {
     if (isFormValid) {
       const id = uuidv4(); 
       setUniqueID(id); 
-      setFormData({}); // Clear form data
-      setShowSuccessModal(true); // Show success modal
+      setFormData({}); 
+      setShowSuccessModal(true);
     }
   };
 
