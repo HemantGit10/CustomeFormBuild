@@ -13,7 +13,7 @@ interface SuccessModalProps {
 const SuccessModal: React.FC<SuccessModalProps> = ({ open, onClose, uniqueID }) => {
   useEffect(() => {
     if (open) {
-      const timer = setTimeout(onClose, 5000); // Auto-close after 5 seconds
+      const timer = setTimeout(onClose, 5000); 
       return () => clearTimeout(timer);
     }
   }, [open, onClose]);
