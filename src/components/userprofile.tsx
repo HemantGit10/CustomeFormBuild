@@ -1,4 +1,3 @@
-// src/components/UserProfile.tsx
 import React from 'react';
 import useFetchUserData from '../hooks/useFetchUserData';
 

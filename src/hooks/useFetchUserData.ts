@@ -1,4 +1,3 @@
-// src/hooks/useFetchUserData.ts
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserData } from '../redux/slice/userSlice';
@@ -11,7 +10,7 @@ const useFetchUserData = (userId: string) => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(fetchUserData(userId)); // No TypeScript error now
+      dispatch(fetchUserData(userId));
     }
   }, [dispatch, userId]);
 

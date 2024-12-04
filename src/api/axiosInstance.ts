@@ -1,7 +1,6 @@
 
 import axios from 'axios';
 
-// Create an Axios instance with base URL and any default headers.
 const axiosInstance = axios.create({
   baseURL: '', 
   headers: {
